@@ -1,3 +1,40 @@
 spring:
   application:
     name: bringstock
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - profile
+              - email
+
+cors:
+  allowed-origins: http://localhost:3000
+
+jwt:
+  access-time: ${JWT_ACCESS_TIME}
+  refresh-time: ${JWT_REFRESH_TIME}
+  prefix: ${JWT_PREFIX}
+  header: ${JWT_HEADER}
+  secret-key: ${JWT_SECRET_KEY}
