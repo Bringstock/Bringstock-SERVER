@@ -29,6 +29,9 @@ spring:
               - profile
               - email
 
+cors:
+  allowed-origins: http://localhost:3000
+
 jwt:
   access-time: ${JWT_ACCESS_TIME}
   refresh-time: ${JWT_REFRESH_TIME}
