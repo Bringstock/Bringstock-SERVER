@@ -2,8 +2,10 @@ package Majorpiece.bringstock.global.config;
 
 import Majorpiece.bringstock.global.error.ExceptionFilter;
 import Majorpiece.bringstock.global.security.jwt.JwtAuthenticationFilter;
+import Majorpiece.bringstock.global.security.jwt.TokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,12 +20,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final TokenProvider tokenProvider;
 
-    private final ExceptionFilter exceptionFilter;
+    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
                 .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
@@ -33,11 +36,27 @@ public class SecurityConfig {
                         .requestMatchers("/", "/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(exceptionFilter, JwtAuthenticationFilter.class)
-                .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(new Http403ForbiddenEntryPoint()));
 
         return http.build();
+    }
+
+    @Bean
+    public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilterRegistration() {
+        FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new JwtAuthenticationFilter(tokenProvider));
+        registrationBean.setOrder(1);
+        registrationBean.addUrlPatterns("/*");
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<ExceptionFilter> exceptionFilterRegistration() {
+        FilterRegistrationBean<ExceptionFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new ExceptionFilter(objectMapper));
+        registrationBean.setOrder(0);
+        registrationBean.addUrlPatterns("/*");
+        return registrationBean;
     }
 }
 
