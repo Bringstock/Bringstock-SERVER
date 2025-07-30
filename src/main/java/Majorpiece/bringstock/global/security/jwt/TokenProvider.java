@@ -9,12 +9,14 @@ import java.util.Date;
 import Majorpiece.bringstock.domain.user.domain.User;
 import Majorpiece.bringstock.global.security.exception.ExpiredJwtTokenException;
 import Majorpiece.bringstock.global.security.exception.InvalidJwtTokenException;
+import Majorpiece.bringstock.global.security.vo.CustomUser;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -56,6 +58,19 @@ public class TokenProvider {
         } catch (JwtException e) {
             throw InvalidJwtTokenException.EXCEPTION;
         }
+    }
+
+    public String create(final Authentication authentication) {
+        CustomUser userPrincipal = (CustomUser) authentication.getPrincipal();
+
+        Date expiryDate = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
+
+        return Jwts.builder()
+                .setSubject(userPrincipal.getName())
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(signingKey, SignatureAlgorithm.HS512)
+                .compact();
     }
 
     public String createByUserId(final Long userId) {

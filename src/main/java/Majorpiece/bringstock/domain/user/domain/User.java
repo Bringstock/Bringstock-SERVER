@@ -1,14 +1,14 @@
 package Majorpiece.bringstock.domain.user.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "user")
+@Builder
+@AllArgsConstructor
 public class User {
 
     @Id
