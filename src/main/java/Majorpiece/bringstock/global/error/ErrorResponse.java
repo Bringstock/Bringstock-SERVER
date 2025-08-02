@@ -1,16 +1,21 @@
 package Majorpiece.bringstock.global.error;
 
+import Majorpiece.bringstock.global.error.exception.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
-public class ErrorResponse {
-    private final int status;
-    private final String message;
+public record ErrorResponse (
 
-    @Builder
-    public ErrorResponse(int status, String message) {
-        this.status = status;
-        this.message = message;
+        int status,
+        String code,
+        String message
+
+    ){
+    public ErrorResponse(ErrorCode errorCode) {
+        this(
+                errorCode.getStatus(),
+                errorCode.getCode(),
+                errorCode.getMessage()
+        );
     }
 }
