@@ -6,7 +6,6 @@ import Majorpiece.bringstock.domain.auth.exception.LoginFailedException;
 import Majorpiece.bringstock.domain.user.domain.User;
 import Majorpiece.bringstock.domain.user.domain.repository.UserRepository;
 import Majorpiece.bringstock.domain.user.exception.DuplicateUserException;
-import Majorpiece.bringstock.domain.user.exception.UserNotFoundException;
 import Majorpiece.bringstock.global.security.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
