@@ -1,9 +1,11 @@
 package Majorpiece.bringstock.domain.auth.service;
 
+import Majorpiece.bringstock.domain.auth.dto.request.LoginRequest;
 import Majorpiece.bringstock.domain.auth.dto.request.SignupRequest;
 import Majorpiece.bringstock.domain.user.domain.User;
 import Majorpiece.bringstock.domain.user.domain.repository.UserRepository;
 import Majorpiece.bringstock.domain.user.exception.DuplicateUserException;
+import Majorpiece.bringstock.domain.user.exception.UserNotFoundException;
 import Majorpiece.bringstock.global.security.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,5 +32,16 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
+    }
+
+    public String login(LoginRequest loginRequest) {
+        User user = userRepository.findByUsername(loginRequest.username())
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
+            throw UserNotFoundException.EXCEPTION;
+        }
+
+        return tokenProvider.create(user);
     }
 }
