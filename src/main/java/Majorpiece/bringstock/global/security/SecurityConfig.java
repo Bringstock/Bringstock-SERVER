@@ -1,4 +1,4 @@
-package Majorpiece.bringstock.global.config;
+package Majorpiece.bringstock.global.security;
 
 import Majorpiece.bringstock.global.error.ExceptionFilter;
 import Majorpiece.bringstock.global.security.jwt.JwtAuthenticationFilter;
@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
