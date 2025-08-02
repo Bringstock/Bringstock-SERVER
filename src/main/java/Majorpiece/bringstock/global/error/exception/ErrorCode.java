@@ -13,7 +13,9 @@ public enum ErrorCode {
 
     INVALID_JWT_TOKEN(401, "Invalid JWT Token"),
 
-    USER_NOT_FOUND(404, "User Not Found");
+    USER_NOT_FOUND(404, "User Not Found"),
+
+    DUPLICATE_USER(409, "Duplicate User");
 
     private final int status;
     private final String message;
