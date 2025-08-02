@@ -15,7 +15,9 @@ public enum ErrorCode {
 
     USER_NOT_FOUND(404, "User Not Found"),
 
-    DUPLICATE_USER(409, "Duplicate User");
+    DUPLICATE_USER(409, "Duplicate User"),
+
+    LOGIN_FAILED(401, "Invalid username or password");
 
     private final int status;
     private final String message;

@@ -2,6 +2,7 @@ package Majorpiece.bringstock.domain.auth.service;
 
 import Majorpiece.bringstock.domain.auth.dto.request.LoginRequest;
 import Majorpiece.bringstock.domain.auth.dto.request.SignupRequest;
+import Majorpiece.bringstock.domain.auth.exception.LoginFailedException;
 import Majorpiece.bringstock.domain.user.domain.User;
 import Majorpiece.bringstock.domain.user.domain.repository.UserRepository;
 import Majorpiece.bringstock.domain.user.exception.DuplicateUserException;
@@ -36,10 +37,10 @@ public class AuthService {
 
     public String login(LoginRequest loginRequest) {
         User user = userRepository.findByUsername(loginRequest.username())
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+                .orElseThrow(() -> LoginFailedException.EXCEPTION);
 
         if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
-            throw UserNotFoundException.EXCEPTION;
+            throw LoginFailedException.EXCEPTION;
         }
 
         return tokenProvider.create(user);
