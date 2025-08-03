@@ -3,6 +3,7 @@ package Majorpiece.bringstock.domain.auth.controller;
 import Majorpiece.bringstock.domain.auth.dto.request.LoginRequest;
 import Majorpiece.bringstock.domain.auth.dto.request.SignupRequest;
 import Majorpiece.bringstock.domain.auth.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody SignupRequest signupRequest){
+    public ResponseEntity<String> signup(@Valid @RequestBody SignupRequest signupRequest){
 
         authService.signup(signupRequest);
 
@@ -29,7 +30,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginRequest loginRequest) {
         String token = authService.login(loginRequest);
         return ResponseEntity.ok(Map.of("token", token));
     }
