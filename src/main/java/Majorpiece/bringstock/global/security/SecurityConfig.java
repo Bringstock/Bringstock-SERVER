@@ -1,11 +1,9 @@
 package Majorpiece.bringstock.global.security;
 
-import Majorpiece.bringstock.global.error.ExceptionFilter;
 import Majorpiece.bringstock.global.security.jwt.JwtAuthenticationFilter;
 import Majorpiece.bringstock.global.security.jwt.TokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -37,27 +36,10 @@ public class SecurityConfig {
                         .requestMatchers("/", "/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(new Http403ForbiddenEntryPoint()));
 
         return http.build();
-    }
-
-    @Bean
-    public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilterRegistration() {
-        FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new JwtAuthenticationFilter(tokenProvider));
-        registrationBean.setOrder(1);
-        registrationBean.addUrlPatterns("/*");
-        return registrationBean;
-    }
-
-    @Bean
-    public FilterRegistrationBean<ExceptionFilter> exceptionFilterRegistration() {
-        FilterRegistrationBean<ExceptionFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new ExceptionFilter(objectMapper));
-        registrationBean.setOrder(0);
-        registrationBean.addUrlPatterns("/*");
-        return registrationBean;
     }
 
     @Bean
