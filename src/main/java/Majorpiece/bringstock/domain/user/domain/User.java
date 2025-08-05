@@ -1,5 +1,6 @@
 package Majorpiece.bringstock.domain.user.domain;
 
+import Majorpiece.bringstock.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,11 +10,7 @@ import lombok.*;
 @Table(name = "user")
 @Builder
 @AllArgsConstructor
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity {
 
     private String username;
 
