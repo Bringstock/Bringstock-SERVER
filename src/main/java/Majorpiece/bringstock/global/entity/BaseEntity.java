@@ -8,13 +8,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+import static jakarta.persistence.GenerationType.*;
+
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 public class BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @CreatedDate
