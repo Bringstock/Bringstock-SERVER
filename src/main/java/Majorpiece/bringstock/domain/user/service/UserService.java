@@ -12,7 +12,7 @@ public class UserService {
 
     private final UserFacade userFacade;
 
-    public UserProfileResponse getUserProfile(UserFacade userFacade) {
+    public UserProfileResponse getUserProfile() {
         User user = userFacade.getCurrentUser();
 
         return new UserProfileResponse(user);
